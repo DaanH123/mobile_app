@@ -1,0 +1,48 @@
+.hidden {
+  display: none;
+}
+
+.sheet {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  margin-left: 0;
+  background-color: #2e2e2e;
+  transition: 0.3s ease;
+  height: 100vh;
+}
+
+body.stop-scrolling {
+  position: fixed;
+  overflow-y: scroll;
+  width: 100%;
+}
+
+.sheet-out-of-view {
+  margin-left: -100%;
+}
+
+.sheet main {
+  min-height: calc(100vh - 56px -48px);
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--mdc-theme-primary);
+}
+
+footer .mdc-tab__icon {
+  color: white !important;
+}
+
+.mdc-text-field {
+  width: 100%;
+}
+
+#go-back {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}

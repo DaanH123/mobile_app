@@ -9,54 +9,10 @@
   <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
 
   <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
   <script>const MDCBanner = mdc.banner.MDCBanner; const MDCCheckbox = mdc.checkbox.MDCCheckbox; const MDCChip = mdc.chips.MDCChip; const MDCChipSet = mdc.chips.MDCChipSet; const MDCCircularProgress = mdc.circularProgress.MDCCircularProgress; const MDCDataTable = mdc.dataTable.MDCDataTable; const MDCDialog = mdc.dialog.MDCDialog; const MDCDrawer = mdc.drawer.MDCDrawer; const MDCFloatingLabel = mdc.floatingLabel.MDCFloatingLabel; const MDCFormField = mdc.formField.MDCFormField; const MDCIconButtonToggle = mdc.iconButton.MDCIconButtonToggle; const MDCLineRipple = mdc.lineRipple.MDCLineRipple; const MDCLinearProgress = mdc.linearProgress.MDCLinearProgress; const MDCList = mdc.list.MDCList; const MDCMenu = mdc.menu.MDCMenu; const MDCMenuSurface = mdc.menuSurface.MDCMenuSurface; const MDCNotchedOutline = mdc.notchedOutline.MDCNotchedOutline; const MDCRadio = mdc.radio.MDCRadio; const MDCRipple = mdc.ripple.MDCRipple; const MDCSegmentedButton = mdc.segmentedButton.MDCSegmentedButton; const MDCSelect = mdc.select.MDCSelect; const MDCSlider = mdc.slider.MDCSlider; const MDCSnackbar = mdc.snackbar.MDCSnackbar; const MDCSwitch = mdc.switchControl.MDCSwitch; const MDCTabBar = mdc.tabBar.MDCTabBar; const MDCTextField = mdc.textField.MDCTextField; const MDCTooltip = mdc.tooltip.MDCTooltip; const MDCTopAppBar = mdc.topAppBar.MDCTopAppBar;</script>
-
-  <style>
-    .hidden {
-      display: none;
-    }
-
-    .sheet {
-      position: absolute;
-      top: 0;
-      width: 100vw;
-      margin-left: 0;
-      background-color: #2e2e2e;
-      transition: 0.3s ease;
-      height: 100vh;
-    }
-
-    body.stop-scrolling {
-      position: fixed;
-      overflow-y: scroll;
-      width: 100%;
-    }
-
-    .sheet-out-of-view {
-      margin-left: -100%;
-    }
-
-    .sheet main {
-      min-height: calc(100vh - 56px -48px);
-    }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: var(--mdc-theme-primary);
-    }
-
-    footer .mdc-tab__icon {
-      color: white !important;
-    }
-
-    .mdc-text-field {
-      width: 100%;
-    }
-  </style>
 </head>
 
 <body>
@@ -83,15 +39,10 @@
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
         <img src="images/android-chrome-384x384.png" alt="" width="200px">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page" tabindex="0">
+        <a class="mdc-list-item mdc-list-item--activated" href="index.html" aria-current="page" tabindex="0">
           <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
           <span class="mdc-list-item__text">Home</span>
-        </a>
-        <a class="mdc-list-item" href="#">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo_library</i>
-          <span class="mdc-list-item__text">Pokemons</span>
         </a>
         <a class="mdc-list-item" href="types.html">
           <span class="mdc-list-item__ripple"></span>
@@ -116,7 +67,7 @@
       </div>
     </div>
 
-    <div class="addToContainer pt-8 px-2 grid grid-cols-3 gap-2 justify-center items-center mx-auto"></div>
+    <div class="addToContainer pt-8 px-2 grid grid-cols-2 gap-2 justify-center items-center mx-auto"></div>
     <div class="pagination"></div>
     <div class="flex justify-center gap-4 p-4">
       <button class="prev mdc-button mdc-button--raised">
@@ -190,7 +141,7 @@
     </footer>
 
   </section>
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 
 </html>

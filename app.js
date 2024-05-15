@@ -1,5 +1,8 @@
+export { fetchPokemonById };
+
 const container = document.querySelector('.addToContainer');
 const topAppBar = new MDCTopAppBar(document.querySelector('.mdc-top-app-bar'));
+const drawer = new MDCDrawer(document.querySelector('.mdc-drawer'));
 const searchInput = document.querySelector('#my-search');
 const searchContainer = document.querySelector('.mdc-text-field');
 const pokemonContainer = document.querySelector('.sheet main');
@@ -53,9 +56,6 @@ function sheetview() {
 
             fetchPokemonById();
 
-            let contentTitle = element.getAttribute('title');
-            title.textContent = contentTitle;
-
             document.body.classList.add('stop-scrolling')
 
             document.querySelector('.sheet').classList.remove('sheet-out-of-view');
@@ -103,12 +103,14 @@ function fetchPokemons() {
         });
 
     //Maak de vorige button onklikbaar als we op de eerste pagina zitten
-    if (pageOffset === 0) {
-        prevButton.disabled = true;
-        prevButton.classList.add('opacity-50');
-    } else {
-        prevButton.disabled = false;
-        prevButton.classList.remove('opacity-50');
+    if (prevButton) {
+        if (pageOffset === 0) {
+            prevButton.disabled = true;
+            prevButton.classList.add('opacity-50');
+        } else {
+            prevButton.disabled = false;
+            prevButton.classList.remove('opacity-50');
+        }
     }
 
     // Event listener for the search button
@@ -196,10 +198,10 @@ function fetchPokemonById() {
                     </div>
                 </div>
                 <div class="flex justify-center gap-4 p-4">
-                    <button class="mdc-button mdc-button--raised">
+                    <button class="prevPokeBtn mdc-button mdc-button--raised">
                         <span class="mdc-button__label">Back</span>
                     </button>
-                    <button class="mdc-button mdc-button--raised">
+                    <button class="nextPokeBtn mdc-button mdc-button--raised">
                         <span class="mdc-button__label">Next</span>
                     </button>
                 </div>
@@ -208,12 +210,14 @@ function fetchPokemonById() {
 
 
             //Maak de vorige button onklikbaar als we op de eerste pagina zitten
-            if (Number(pokemonID) === 1) {
-                prevButton.disabled = true;
-                prevButton.classList.add('opacity-50');
-            } else {
-                prevButton.disabled = false;
-                prevButton.classList.remove('opacity-50');
+            if (prevButton) {
+                if (Number(pokemonID) === 1) {
+                    prevButton.disabled = true;
+                    prevButton.classList.add('opacity-50');
+                } else {
+                    prevButton.disabled = false;
+                    prevButton.classList.remove('opacity-50');
+                }
             }
 
             // Voeg de div toe aan de container
@@ -246,42 +250,48 @@ function fetchPokemonById() {
             const nextPokeButton = document.querySelector('.nextPokeBtn');
             const prevPokeButton = document.querySelector('.prevPokeBtn');
 
-            nextPokeButton.addEventListener('click', () => {
-                document.querySelector('.sheet main').innerHTML = '';
-                pokemonID++;
-                const url = new URL(location);
+            if (nextPokeButton) {
+                nextPokeButton.addEventListener('click', () => {
+                    document.querySelector('.sheet main').innerHTML = '';
+                    pokemonID++;
+                    const url = new URL(location);
 
-                url.searchParams.set('pokemonID', pokemonID);
-                history.pushState({}, "", url);
-                fetchPokemonById();
-            });
+                    url.searchParams.set('pokemonID', pokemonID);
+                    history.pushState({}, "", url);
+                    fetchPokemonById();
+                });
+            }
 
             //Button voor de vorige pokemon maak eerst de pagina leeg daarna verlaag de pokemonID en fetch de pokemon opnieuw en update de url
-            prevPokeButton.addEventListener('click', () => {
-                if (pokemonID < 1) {
-                    alert('This is the first pokemon');
-                }
+            if (prevPokeButton) {
+                prevPokeButton.addEventListener('click', () => {
+                    if (pokemonID < 1) {
+                        alert('This is the first pokemon');
+                    }
 
-                document.querySelector('.sheet main').innerHTML = '';
-                pokemonID--;
-                const url = new URL(location);
+                    document.querySelector('.sheet main').innerHTML = '';
+                    pokemonID--;
+                    const url = new URL(location);
 
-                url.searchParams.set('pokemonID', pokemonID);
-                history.pushState({}, "", url);
-                fetchPokemonById();
-            });
+                    url.searchParams.set('pokemonID', pokemonID);
+                    history.pushState({}, "", url);
+                    fetchPokemonById();
+                });
+            }
         });
 }
 
-seachPokemonButton.addEventListener('click', () => {
-    pokemonName = searchInput.value;
-    const url = new URL(location);
+if (seachPokemonButton) {
+    seachPokemonButton.addEventListener('click', () => {
+        pokemonName = searchInput.value;
+        const url = new URL(location);
 
-    url.searchParams.set('query', pokemonName);
-    history.pushState({}, "", url);
+        url.searchParams.set('query', pokemonName);
+        history.pushState({}, "", url);
 
-    fetchPokemonByName();
-});
+        fetchPokemonByName();
+    });
+}
 
 function fetchPokemonByName() {
 
@@ -336,34 +346,45 @@ function formatPokemonID(external_pokemonid) {
 
 //Functie om de pagination te updaten
 function updatePagination() {
-    title.innerHTML = `Pokemon page ${currentPage}`;
-    paginationP.innerHTML = `Page: ${currentPage}`;
-    paginationP.className = 'text-center py-4 text-lg font-bold';
-    pagination.appendChild(paginationP);
+    if (title) {
+        title.innerHTML = `Pokemon page ${currentPage}`;
+    }
+
+    if (pagination) {
+        paginationP.innerHTML = `Page: ${currentPage}`;
+        paginationP.className = 'text-center py-4 text-lg font-bold';
+        pagination.appendChild(paginationP);
+    }
 }
 
 //Button voor de volgende pokemon maak eerst de pagina leeg daarna verhoog de offset en de currentpage en fetch de pokemon opnieuw
-nextButton.addEventListener('click', () => {
-    container.innerHTML = '';
-    pageOffset += pageLimit;
-    currentPage += 1;
-    updatePagination();
-    fetchPokemons();
-});
+if (nextButton) {
+    nextButton.addEventListener('click', () => {
+        container.innerHTML = '';
+        pageOffset += pageLimit;
+        currentPage += 1;
+        updatePagination();
+        fetchPokemons();
+    });
+}
 
 //Button voor de vorige pokemon maak eerst de pagina leeg daarna verlaag de offset en de currentpage en fetch de pokemon opnieuw
-prevButton.addEventListener('click', () => {
-    if (pageOffset === 0) return;
-    container.innerHTML = '';
-    pageOffset -= pageLimit;
-    currentPage -= 1;
-    updatePagination();
-    fetchPokemons();
-});
+if (prevButton) {
+    prevButton.addEventListener('click', () => {
+        if (pageOffset === 0) return;
+        container.innerHTML = '';
+        pageOffset -= pageLimit;
+        currentPage -= 1;
+        updatePagination();
+        fetchPokemons();
+    });
+}
 
 //Fetch de pokemons en update de pagination
 document.addEventListener('DOMContentLoaded', (event) => {
-    sheetview();
-    updatePagination();
-    fetchPokemons();
+    if (window.location.href.endsWith('index.html') || window.location.href.endsWith('/')) {
+        sheetview();
+        updatePagination();
+        fetchPokemons();
+    }
 });
