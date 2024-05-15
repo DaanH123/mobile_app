@@ -89,7 +89,7 @@ function fetchPokemons() {
                 div.innerHTML = `
                 <div class="card mdc-card mdc-card--outlined" data-id="${pokemonID}">
                     <div class="flex justify-center flex-col">
-                        <img src="${pokemonImage}" alt="${pokemonName}" />
+                        <img src="${pokemonImage}" alt="${pokemonName}" class="w-32 h-32 mx-auto"/>
                         <h1 class="text-center py-2">${pokemonID}. ${pokemonName}</h1>
                         </div>
                 </div>
