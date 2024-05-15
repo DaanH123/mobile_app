@@ -29,10 +29,10 @@
     }
 
     body.stop-scrolling {
-    position: fixed;
-    overflow-y: scroll;
-    width: 100%;
-}
+      position: fixed;
+      overflow-y: scroll;
+      width: 100%;
+    }
 
     .sheet-out-of-view {
       margin-left: -100%;
@@ -71,7 +71,8 @@
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
         <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
           aria-label="Favorite">favorite</button>
-          <button id="searchButton" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Search">search</button>
+        <button id="searchButton" class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+          aria-label="Search">search</button>
         <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
           aria-label="Options">more_vert</button>
       </section>
@@ -92,6 +93,11 @@
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo_library</i>
           <span class="mdc-list-item__text">Pokemons</span>
         </a>
+        <a class="mdc-list-item" href="types.html">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo_library</i>
+          <span class="mdc-list-item__text">Types</span>
+        </a>
       </nav>
     </div>
   </aside>
@@ -100,7 +106,7 @@
   <main class="mdc-top-app-bar--fixed-adjust">
 
     <div class="hidden mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
-      <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">search</i>
+      <i class="material-icons mdc-text-field__icon" tabindex="0" role="button" id="search-Button">search</i>
       <input type="text" placeholder="Search pokemon" id="my-search" class="mdc-text-field__input">
       <div class="mdc-notched-outline">
         <div class="mdc-notched-outline__leading"></div>
@@ -110,11 +116,15 @@
       </div>
     </div>
 
-    <div class="addToContainer pt-8 grid grid-cols-3 gap-2 justify-center items-center mx-auto"></div>
+    <div class="addToContainer pt-8 px-2 grid grid-cols-3 gap-2 justify-center items-center mx-auto"></div>
     <div class="pagination"></div>
     <div class="flex justify-center gap-4 p-4">
-        <button class="prev bg-blue-700 text-white px-8 py-3 rounded-xl w-24">Back</button>
-        <button class="next bg-blue-700 text-white px-8 py-3 rounded-xl w-24">Next</button>
+      <button class="prev mdc-button mdc-button--raised">
+        <span class="mdc-button__label">Back</span>
+      </button>
+      <button class="next mdc-button mdc-button--raised">
+        <span class="mdc-button__label">Next</span>
+      </button>
     </div>
 
   </main>
