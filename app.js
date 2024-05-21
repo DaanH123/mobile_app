@@ -6,16 +6,17 @@ const drawer = new MDCDrawer(document.querySelector('.mdc-drawer'));
 const searchInput = document.querySelector('#my-search');
 const searchContainer = document.querySelector('.mdc-text-field');
 const pokemonContainer = document.querySelector('.sheet main');
+const favoritePokemonBtn = document.querySelector('.favoritePokemonBtn');
 
 const pagination = document.querySelector('.pagination');
 const paginationP = document.createElement('p');
 const searchButton = document.querySelector('#searchButton');
 const seachPokemonButton = document.querySelector('#search-Button');
 
-let pageLimit = 20;
-let pageOffset = 0;
 let currentPage = 1;
+const pokemonsPerPage = 20;
 let pokemonID;
+let pokemonName;
 
 const title = document.querySelector('.mdc-top-app-bar__title');
 
@@ -68,59 +69,72 @@ function sheetview() {
 }
 
 function fetchPokemons() {
-    fetch(`https://pokeapi.co/api/v2/pokemon?limit=${pageLimit}&offset=${pageOffset}`)
+    fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`)
         .then(response => response.json())
         .then(data => {
-            //Sla alle data op in pokemon variable
-            const pokemon = data.results;
-
-            pokemon.forEach(pokemon => {
-
-                // Haa alle info van de pokemon op
-                const pokemonName = pokemon.name;
-                const pokemonUrl = pokemon.url;
-
-                const pokemonID = pokemonUrl.split('/')[6];
-                const pokemonImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonID}.png`;
-
-                //Maak een div aan en vul deze met de info van de pokemon
-                const div = document.createElement('div');
-                div.className = 'pokecard w-25';
-                div.innerHTML = `
-                <div class="card mdc-card mdc-card--outlined" data-id="${pokemonID}">
-                    <div class="flex justify-center flex-col">
-                        <img src="${pokemonImage}" alt="${pokemonName}" class="w-32 h-32 mx-auto"/>
-                        <h1 class="text-center py-2">${pokemonID}. ${pokemonName}</h1>
-                        </div>
-                </div>
-              `;
-
-                //Voeg de div toe aan de container
-                container.appendChild(div);
-            });
-
-            sheetview();
+            localStorage.setItem('pokemons', JSON.stringify(data.results));
+            displayPokemons();
         });
+}
 
-    //Maak de vorige button onklikbaar als we op de eerste pagina zitten
-    if (prevButton) {
-        if (pageOffset === 0) {
-            prevButton.disabled = true;
-            prevButton.classList.add('opacity-50');
-        } else {
-            prevButton.disabled = false;
-            prevButton.classList.remove('opacity-50');
-        }
-    }
+function displayPokemons() {
+    // Haal de opgeslagen pokemons uit de lokale opslag en parse het naar een JavaScript object
+    const pokemons = JSON.parse(localStorage.getItem('pokemons'));
 
-    // Event listener for the search button
-    searchButton.addEventListener('click', () => {
-        searchButtonVisible();
+    // Bereken startindex voor huidige pagina. Trek 1 af van huidige pagina en vermenigvuldig met pokemons per pagina.
+    const start = (currentPage - 1) * pokemonsPerPage;
+
+    // Bereken de eindindex voor de huidige pagina
+    const end = start + pokemonsPerPage;
+    const currentPokemons = pokemons.slice(start, end);
+
+    // Clear the current display
+    container.innerHTML = '';
+
+    currentPokemons.forEach(pokemon => {
+        const pokemonID = pokemon.url.split('/')[6];
+        const pokemonImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonID}.png`;
+        pokemonName = pokemon.name;
+
+        const div = document.createElement('div');
+        div.className = 'pokecard w-25';
+        div.innerHTML = `
+        <div class="card mdc-card mdc-card--outlined" data-id="${pokemonID}">
+            <div class="flex justify-center flex-col">
+                <img src="${pokemonImage}" alt="${pokemonName}" class="w-32 h-32 mx-auto"/>
+                <h1 class="text-center py-2">${pokemonID}. ${pokemonName}</h1>
+            </div>
+        </div>
+        `;
+        container.appendChild(div);
+
+        sheetview();
     });
 }
 
-// Fetch pokemon by ID
+function handleButtonClick(direction) {
+    const pokemons = JSON.parse(localStorage.getItem('pokemons'));
+    const maxPage = Math.ceil(pokemons.length / pokemonsPerPage);
 
+    if (direction === 'next' && currentPage < maxPage) {
+        currentPage++;
+    } else if (direction === 'back' && currentPage > 1) {
+        currentPage--;
+    }
+
+    updatePagination();
+    displayPokemons();
+}
+
+if (nextButton) { nextButton.addEventListener('click', () => handleButtonClick('next')); }
+if (prevButton) { prevButton.addEventListener('click', () => handleButtonClick('back')); }
+
+// Event listener for the search button
+searchButton.addEventListener('click', () => {
+    searchButtonVisible();
+});
+
+// Fetch pokemon by ID
 function fetchPokemonById() {
     // Get the id from the URL
     document.querySelector('.sheet main').innerHTML = '';
@@ -128,7 +142,7 @@ function fetchPokemonById() {
     let pokemonId = urlParams.get('pokemonID');
 
     // Make the API call
-    fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
+    return fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
         .then(response => response.json())
         .then(data => {
             const pokemon = data;
@@ -175,7 +189,7 @@ function fetchPokemonById() {
             //Maak een div aan en vul deze met de data van de pokemon
             const div = document.createElement('div');
             div.innerHTML = `
-            <div class="pokemon-card pt-20 text-white">
+            <div class="pokemon-card pt-20 text-white" data-id=${pokemonID}>
                 <div class="block md:flex items-center">
                     <div class="px-4 md:flex items-center">
                         <h2 class="font-bold text-xl uppercase">${pokemonID}. ${pokemonName}</h2>
@@ -207,7 +221,6 @@ function fetchPokemonById() {
                 </div>
             </div>
         `;
-
 
             //Maak de vorige button onklikbaar als we op de eerste pagina zitten
             if (prevButton) {
@@ -278,6 +291,7 @@ function fetchPokemonById() {
                     fetchPokemonById();
                 });
             }
+            return data;
         });
 }
 
@@ -286,50 +300,65 @@ if (seachPokemonButton) {
         pokemonName = searchInput.value;
         const url = new URL(location);
 
+        if (!pokemonName) { alert("Geen pokemon gevonden") }
+
         url.searchParams.set('query', pokemonName);
         history.pushState({}, "", url);
 
-        fetchPokemonByName();
+        searchPokemonByName(pokemonName);
     });
 }
 
-function fetchPokemonByName() {
+if (searchInput) {
+    searchInput.addEventListener('keypress', (event) => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            pokemonName = searchInput.value;
+            const url = new URL(location);
 
-    // Maak de pagina leeg
+            if (!pokemonName) { alert("Geen pokemon gevonden") }
+
+            url.searchParams.set('query', pokemonName);
+            history.pushState({}, "", url);
+
+            searchPokemonByName(pokemonName);
+        }
+    });
+}
+
+function searchPokemonByName(query) {
+    // Haal de opgeslagen pokemons uit de lokale opslag en parse het naar een JavaScript object
+    const pokemons = JSON.parse(localStorage.getItem('pokemons'));
     document.querySelector('.addToContainer').innerHTML = '';
+    query = query.toLowerCase();
+    const searchResults = pokemons.filter(pokemon => pokemon.name.includes(query));
 
-    // Haal de pokemon naam op uit de url
-    const urlParams = new URLSearchParams(window.location.search);
-    const query = urlParams.get('query');
+    searchResults.forEach(pokemon => {
+        const pokemonID = pokemon.url.split('/')[6];
+        const pokemonImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonID}.png`;
 
-    // Make the API call
-    fetch(`https://pokeapi.co/api/v2/pokemon/${query}`)
-        .then(response => response.json())
-        .then(data => {
-            const pokemon = data;
-
-            // Haal alle info van de pokemon op
-            const pokemonName = pokemon.name;
-            const pokemonImage = pokemon.sprites.front_default;
-            let pokemonID = pokemon.id;
-
-            //Maak een div aan en vul deze met de info van de pokemon
-            const div = document.createElement('div');
-            div.className = 'pokecard w-25';
-            div.innerHTML = `
-                <div class="card mdc-card mdc-card--outlined" data-id="${pokemonID}">
-                    <div class="flex justify-center flex-col">
-                        <img src="${pokemonImage}" alt="${pokemonName}" />
-                        <h1 class="text-center py-2">${pokemonID}. ${pokemonName}</h1>
-                        </div>
+        const div = document.createElement('div');
+        div.className = 'pokecard w-25';
+        div.innerHTML = `
+            <div class="card mdc-card mdc-card--outlined" data-id="${pokemonID}">
+                <div class="flex justify-center flex-col">
+                    <img src="${pokemonImage}" alt="${pokemon.name}" class="w-32 h-32 mx-auto"/>
+                    <h1 class="text-center py-2">${pokemonID}. ${pokemon.name}</h1>
                 </div>
-              `;
+            </div>
+        `;
 
-            //Voeg de div toe aan de container
-            container.appendChild(div);
+        // Add the div to the container
+        container.appendChild(div);
 
-            sheetview();
-        });
+        sheetview();
+    });
+
+    if (searchResults.length < pokemonsPerPage) {
+        pagination.innerHTML = '';
+        nextButton.disabled = true;
+        prevButton.disabled = true;
+    }
 }
 
 function formatPokemonID(external_pokemonid) {
@@ -357,26 +386,28 @@ function updatePagination() {
     }
 }
 
-//Button voor de volgende pokemon maak eerst de pagina leeg daarna verhoog de offset en de currentpage en fetch de pokemon opnieuw
-if (nextButton) {
-    nextButton.addEventListener('click', () => {
-        container.innerHTML = '';
-        pageOffset += pageLimit;
-        currentPage += 1;
-        updatePagination();
-        fetchPokemons();
-    });
+function addPokemonToFavorites(pokemon) {
+    if (pokemon) {
+        console.log('addPokemonToFavorites');
+        let favoritePokemons = JSON.parse(localStorage.getItem('favoritePokemons')) || [];
+        favoritePokemons.push(pokemon);
+        localStorage.setItem('favoritePokemons', JSON.stringify(favoritePokemons));
+    }
 }
 
-//Button voor de vorige pokemon maak eerst de pagina leeg daarna verlaag de offset en de currentpage en fetch de pokemon opnieuw
-if (prevButton) {
-    prevButton.addEventListener('click', () => {
-        if (pageOffset === 0) return;
-        container.innerHTML = '';
-        pageOffset -= pageLimit;
-        currentPage -= 1;
-        updatePagination();
-        fetchPokemons();
+if (favoritePokemonBtn) { 
+    favoritePokemonBtn.addEventListener('click', () => {
+        const url = new URL(location);
+        const dataid = document.querySelector('.pokemon-card').getAttribute('data-id');
+        pokemonID = dataid;
+
+        // Fetch the Pokemon data and add it to favorites
+        fetchPokemonById().then(pokemon => {
+            url.searchParams.set('favoritePokemonID', pokemonID);
+            history.pushState({}, "", url);
+
+            addPokemonToFavorites(pokemon);
+        });
     });
 }
 
@@ -384,7 +415,6 @@ if (prevButton) {
 document.addEventListener('DOMContentLoaded', (event) => {
     if (window.location.href.endsWith('index.html') || window.location.href.endsWith('/')) {
         sheetview();
-        updatePagination();
         fetchPokemons();
     }
 });

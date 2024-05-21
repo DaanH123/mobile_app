@@ -45,16 +45,16 @@
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
               <span class="mdc-list-item__text">Home</span>
             </a>
-            <a class="mdc-list-item mdc-list-item--activated" href="types.html">
+            <a class="mdc-list-item" href="types.html">
               <span class="mdc-list-item__ripple"></span>
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo_library</i>
               <span class="mdc-list-item__text">Types</span>
             </a>
-            <a class="mdc-list-item" href="favorites.html">
-              <span class="mdc-list-item__ripple"></span>
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">favorite</i>
-              <span class="mdc-list-item__text">Favorites</span>
-            </a>
+            <a class="mdc-list-item mdc-list-item--activated" href="favorites.html">
+                <span class="mdc-list-item__ripple"></span>
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">favorite</i>
+                <span class="mdc-list-item__text">Favorites</span>
+              </a>
           </nav>
         </div>
       </aside>
@@ -62,7 +62,11 @@
     <div class="mdc-drawer-scrim"></div>
     <main class="mdc-top-app-bar--fixed-adjust">
 
-        <div class="addTypesToContainer addToContainer pt-8 pb-16 px-2 grid grid-cols-2 gap-2 justify-center items-center mx-auto"></div>
+        <h1 class="text-center font-bold pt-10 pb-2 text-lg">Your favorite pokemons</h1>
+        <div class="addToContainer pt-8 pb-16 px-2 grid grid-cols-2 gap-2 justify-center items-center mx-auto"></div>
+        <button id="clearLocalStorage" class="mdc-button mdc-button--raised flex justify-center mx-auto">
+            <span class="mdc-button__label">Verwijder favorieten</span>
+          </button>
 
     </main>
 
@@ -76,8 +80,8 @@
               <span class="mdc-top-app-bar__title">Page title</span>
             </section>
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-              <button class="favoritePokemonBtn material-icons mdc-top-app-bar__action-item mdc-icon-button"
-                aria-label="Favorite">favorite</button>
+              <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+                aria-label="Favorite">share</button>
               <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
                 aria-label="Options">settings</button>
             </section>
@@ -132,7 +136,7 @@
     
       </section>
 
-      <script type="module" src="types.js"></script>
+      <script type="module" src="favorites.js"></script>
 
 </body>
 
