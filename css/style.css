@@ -46,3 +46,7 @@ footer .mdc-tab__icon {
   bottom: 20px;
   right: 20px;
 }
+
+.red {
+  color: red !important;
+}

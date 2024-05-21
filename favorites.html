@@ -2,141 +2,142 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Types - Pokemon app</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Types - Pokemon app</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
 
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-    <script>const MDCBanner = mdc.banner.MDCBanner; const MDCCheckbox = mdc.checkbox.MDCCheckbox; const MDCChip = mdc.chips.MDCChip; const MDCChipSet = mdc.chips.MDCChipSet; const MDCCircularProgress = mdc.circularProgress.MDCCircularProgress; const MDCDataTable = mdc.dataTable.MDCDataTable; const MDCDialog = mdc.dialog.MDCDialog; const MDCDrawer = mdc.drawer.MDCDrawer; const MDCFloatingLabel = mdc.floatingLabel.MDCFloatingLabel; const MDCFormField = mdc.formField.MDCFormField; const MDCIconButtonToggle = mdc.iconButton.MDCIconButtonToggle; const MDCLineRipple = mdc.lineRipple.MDCLineRipple; const MDCLinearProgress = mdc.linearProgress.MDCLinearProgress; const MDCList = mdc.list.MDCList; const MDCMenu = mdc.menu.MDCMenu; const MDCMenuSurface = mdc.menuSurface.MDCMenuSurface; const MDCNotchedOutline = mdc.notchedOutline.MDCNotchedOutline; const MDCRadio = mdc.radio.MDCRadio; const MDCRipple = mdc.ripple.MDCRipple; const MDCSegmentedButton = mdc.segmentedButton.MDCSegmentedButton; const MDCSelect = mdc.select.MDCSelect; const MDCSlider = mdc.slider.MDCSlider; const MDCSnackbar = mdc.snackbar.MDCSnackbar; const MDCSwitch = mdc.switchControl.MDCSwitch; const MDCTabBar = mdc.tabBar.MDCTabBar; const MDCTextField = mdc.textField.MDCTextField; const MDCTooltip = mdc.tooltip.MDCTooltip; const MDCTopAppBar = mdc.topAppBar.MDCTopAppBar;</script>
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  <script>const MDCBanner = mdc.banner.MDCBanner; const MDCCheckbox = mdc.checkbox.MDCCheckbox; const MDCChip = mdc.chips.MDCChip; const MDCChipSet = mdc.chips.MDCChipSet; const MDCCircularProgress = mdc.circularProgress.MDCCircularProgress; const MDCDataTable = mdc.dataTable.MDCDataTable; const MDCDialog = mdc.dialog.MDCDialog; const MDCDrawer = mdc.drawer.MDCDrawer; const MDCFloatingLabel = mdc.floatingLabel.MDCFloatingLabel; const MDCFormField = mdc.formField.MDCFormField; const MDCIconButtonToggle = mdc.iconButton.MDCIconButtonToggle; const MDCLineRipple = mdc.lineRipple.MDCLineRipple; const MDCLinearProgress = mdc.linearProgress.MDCLinearProgress; const MDCList = mdc.list.MDCList; const MDCMenu = mdc.menu.MDCMenu; const MDCMenuSurface = mdc.menuSurface.MDCMenuSurface; const MDCNotchedOutline = mdc.notchedOutline.MDCNotchedOutline; const MDCRadio = mdc.radio.MDCRadio; const MDCRipple = mdc.ripple.MDCRipple; const MDCSegmentedButton = mdc.segmentedButton.MDCSegmentedButton; const MDCSelect = mdc.select.MDCSelect; const MDCSlider = mdc.slider.MDCSlider; const MDCSnackbar = mdc.snackbar.MDCSnackbar; const MDCSwitch = mdc.switchControl.MDCSwitch; const MDCTabBar = mdc.tabBar.MDCTabBar; const MDCTextField = mdc.textField.MDCTextField; const MDCTooltip = mdc.tooltip.MDCTooltip; const MDCTopAppBar = mdc.topAppBar.MDCTopAppBar;</script>
 </head>
 
 <body>
 
+  <header class="mdc-top-app-bar">
+    <div class="mdc-top-app-bar__row">
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
+          aria-label="Open navigation menu" id="hamburger-menu">menu</button>
+        <span class="mdc-top-app-bar__title">Types page</span>
+      </section>
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+        <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+          aria-label="Favorite">favorite</button>
+        <button id="searchButton" class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+          aria-label="Search">search</button>
+        <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+          aria-label="Options">more_vert</button>
+      </section>
+    </div>
+  </header>
+
+  <aside class="mdc-drawer mdc-drawer--modal">
+    <div class="mdc-drawer__content">
+      <nav class="mdc-list">
+        <img src="images/android-chrome-384x384.png" alt="" width="200px">
+        <a class="mdc-list-item" href="index.html" aria-current="page" tabindex="0">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
+          <span class="mdc-list-item__text">Home</span>
+        </a>
+        <a class="mdc-list-item" href="types.html">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo_library</i>
+          <span class="mdc-list-item__text">Types</span>
+        </a>
+        <a class="mdc-list-item mdc-list-item--activated" href="favorites.html">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">favorite</i>
+          <span class="mdc-list-item__text">Favorites</span>
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-scrim"></div>
+  <main class="mdc-top-app-bar--fixed-adjust">
+
+    <h1 class="text-center font-bold pt-10 pb-2 text-lg">Your favorite pokemons</h1>
+    <div class="addToContainer pt-8 pb-16 px-2 grid grid-cols-2 gap-2 justify-center items-center mx-auto"></div>
+    <button id="clearLocalStorage" class="mdc-button mdc-button--raised flex justify-center mx-auto">
+      <span class="mdc-button__label">Verwijder favorieten</span>
+    </button>
+
+  </main>
+
+  <section class="sheet sheet-out-of-view">
+
     <header class="mdc-top-app-bar">
-        <div class="mdc-top-app-bar__row">
-            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
-                    aria-label="Open navigation menu" id="hamburger-menu">menu</button>
-                <span class="mdc-top-app-bar__title">Types page</span>
-            </section>
-            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-                <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-                    aria-label="Favorite">favorite</button>
-                <button id="searchButton" class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-                    aria-label="Search">search</button>
-                <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-                    aria-label="Options">more_vert</button>
-            </section>
-        </div>
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
+            aria-label="Open navigation menu" id="hamburger-menu">close</button>
+          <span class="mdc-top-app-bar__title">Page title</span>
+        </section>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+          <button id="favoriteButton"
+            class="favoritePokemonBtn material-icons mdc-top-app-bar__action-item mdc-icon-button"
+            aria-label="Favorite">favorite</button>
+          <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+            aria-label="Options">settings</button>
+        </section>
+      </div>
     </header>
 
-    <aside class="mdc-drawer mdc-drawer--modal">
-        <div class="mdc-drawer__content">
-          <nav class="mdc-list">
-            <img src="images/android-chrome-384x384.png" alt="" width="200px">
-            <a class="mdc-list-item" href="index.html" aria-current="page" tabindex="0">
-              <span class="mdc-list-item__ripple"></span>
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
-              <span class="mdc-list-item__text">Home</span>
-            </a>
-            <a class="mdc-list-item" href="types.html">
-              <span class="mdc-list-item__ripple"></span>
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo_library</i>
-              <span class="mdc-list-item__text">Types</span>
-            </a>
-            <a class="mdc-list-item mdc-list-item--activated" href="favorites.html">
-                <span class="mdc-list-item__ripple"></span>
-                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">favorite</i>
-                <span class="mdc-list-item__text">Favorites</span>
-              </a>
-          </nav>
-        </div>
-      </aside>
-
-    <div class="mdc-drawer-scrim"></div>
-    <main class="mdc-top-app-bar--fixed-adjust">
-
-        <h1 class="text-center font-bold pt-10 pb-2 text-lg">Your favorite pokemons</h1>
-        <div class="addToContainer pt-8 pb-16 px-2 grid grid-cols-2 gap-2 justify-center items-center mx-auto"></div>
-        <button id="clearLocalStorage" class="mdc-button mdc-button--raised flex justify-center mx-auto">
-            <span class="mdc-button__label">Verwijder favorieten</span>
-          </button>
-
+    <main>
+      <img src="=" alt="" class="">
     </main>
 
-    <section class="sheet sheet-out-of-view">
+    <button id="go-back" class="mdc-button mdc-button--raised" style="display: none;">
+      <span class="mdc-button__label">Go Back</span>
+    </button>
 
-        <header class="mdc-top-app-bar">
-          <div class="mdc-top-app-bar__row">
-            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-              <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
-                aria-label="Open navigation menu" id="hamburger-menu">close</button>
-              <span class="mdc-top-app-bar__title">Page title</span>
-            </section>
-            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-              <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-                aria-label="Favorite">share</button>
-              <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-                aria-label="Options">settings</button>
-            </section>
-          </div>
-        </header>
-    
-        <main>
-          <img src="=" alt="" class="">
-        </main>
-
-        <button id="go-back" class="mdc-button mdc-button--raised" style="display: none;">
-          <span class="mdc-button__label">Go Back</span>
-        </button>
-    
-        <footer>
-          <div class="mdc-tab-bar" role="tablist">
-            <div class="mdc-tab-scroller">
-              <div class="mdc-tab-scroller__scroll-area">
-                <div class="mdc-tab-scroller__scroll-content">
-                  <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
-                    <span class="mdc-tab__content">
-                      <span class="mdc-tab__icon material-icons" aria-hidden="true">thumb_up</span>
-                    </span>
-                    <span class="mdc-tab-indicator mdc-tab-indicator--active">
-                      <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
-                    </span>
-                    <span class="mdc-tab__ripple"></span>
-                  </button>
-                  <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
-                    <span class="mdc-tab__content">
-                      <span class="mdc-tab__icon material-icons" aria-hidden="true">favorite</span>
-                    </span>
-                    <span class="mdc-tab-indicator mdc-tab-indicator--active">
-                      <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
-                    </span>
-                    <span class="mdc-tab__ripple"></span>
-                  </button>
-                  <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
-                    <span class="mdc-tab__content">
-                      <span class="mdc-tab__icon material-icons" aria-hidden="true">thumb_down</span>
-                    </span>
-                    <span class="mdc-tab-indicator mdc-tab-indicator--active">
-                      <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
-                    </span>
-                    <span class="mdc-tab__ripple"></span>
-                  </button>
-                </div>
-              </div>
+    <footer>
+      <div class="mdc-tab-bar" role="tablist">
+        <div class="mdc-tab-scroller">
+          <div class="mdc-tab-scroller__scroll-area">
+            <div class="mdc-tab-scroller__scroll-content">
+              <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
+                <span class="mdc-tab__content">
+                  <span class="mdc-tab__icon material-icons" aria-hidden="true">thumb_up</span>
+                </span>
+                <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                </span>
+                <span class="mdc-tab__ripple"></span>
+              </button>
+              <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
+                <span class="mdc-tab__content">
+                  <span class="mdc-tab__icon material-icons" aria-hidden="true">favorite</span>
+                </span>
+                <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                </span>
+                <span class="mdc-tab__ripple"></span>
+              </button>
+              <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
+                <span class="mdc-tab__content">
+                  <span class="mdc-tab__icon material-icons" aria-hidden="true">thumb_down</span>
+                </span>
+                <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                </span>
+                <span class="mdc-tab__ripple"></span>
+              </button>
             </div>
           </div>
-        </footer>
-    
-      </section>
+        </div>
+      </div>
+    </footer>
 
-      <script type="module" src="favorites.js"></script>
+  </section>
+
+  <script src="js/app.js"></script>
 
 </body>
 
