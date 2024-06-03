@@ -6,6 +6,9 @@ const searchInput = document.querySelector('#my-search');
 const searchContainer = document.querySelector('.mdc-text-field');
 const pokemonContainer = document.querySelector('.sheet main');
 const typesContainer = document.querySelector('.addTypesToContainer');
+const title = document.querySelector('.mdc-top-app-bar__title');
+const nextButton = document.querySelector('.next');
+const prevButton = document.querySelector('.prev');
 
 const pagination = document.querySelector('.pagination');
 const paginationP = document.createElement('p');
@@ -46,11 +49,6 @@ let pokemontypeBackground = {
     "unknown": "#68A090",
     "stellar": "#FFD700",
 };
-
-const title = document.querySelector('.mdc-top-app-bar__title');
-
-const nextButton = document.querySelector('.next');
-const prevButton = document.querySelector('.prev');
 
 // Event listener voor de hamburger menu
 document.querySelector('#hamburger-menu').addEventListener('click', () => {
@@ -192,6 +190,7 @@ function fetchPokemonById() {
             const pokemonImage = pokemon.sprites.front_default;
             let pokemonID = pokemon.id;
             const abilities = pokemon.abilities;
+            const typeName = pokemon.types[0].type.name;
 
             //Haal het id op en format het voor de externe image
             const external_pokemonid = formatPokemonID(pokemonID);
@@ -232,6 +231,14 @@ function fetchPokemonById() {
                 }
             });
 
+            pokemon.types.forEach(type => {
+                //Loop door de types heen en sla de naam op in de pokemonType variabele
+                pokemonType += type.type.name;
+                if (pokemon.types.indexOf(type) !== pokemon.types.length - 1) {
+                    pokemonType += ", ";
+                }
+            });
+
             //Loop door de abilities heen en sla de naam op in de pokemonAbilities variabele
             abilities.forEach((ability) => {
                 pokemonAbilities += ability.ability.name;
@@ -263,7 +270,7 @@ function fetchPokemonById() {
             <div class="pokemon-card pt-20 text-white" data-id=${pokemonID}>
                 <div class="block md:flex items-center">
                     <div class="px-4 md:flex items-center">
-                        <h2 class="font-bold text-xl uppercase">${pokemonID}. ${pokemonName}</h2>
+                        <h2 class="font-bold text-2xl uppercase text-[${pokemontypeBackground[typeName]}]">${pokemonID}. ${pokemonName}</h2>
                         <img class="w-28 highlighted-spot rounded-2xl p-4" src="${pokemonImage}" alt="${pokemonName}">
                             <div class="flex gap-3">
                                 <img class="w-28 border-2 rounded-2xl border-blue-700" id="api_image" src="${pokemonImage}" alt="${pokemonName}">
@@ -271,13 +278,12 @@ function fetchPokemonById() {
                             </div>
                         </div>
                     <div class="px-4 space-y-4 pt-2">
-                        <h3 class="font-bold text-lg">Type</h3>
-                        <p class="text-sm mt-1">${pokemonType}</p>
+                        <h3 class="font-bold text-lg pt-1">Type</h3>
+                        <p class="text-lg mt-1">${pokemonType}</p>
                         <h3 class="font-bold text-lg">Abilities</h3>
-                        <p class="text-sm">${pokemonAbilities}</p>
-                        <h3 class="font-bold text-lg">Cries</h3>
+                        <p class="text-lg mt-1">${pokemonAbilities}</p>
                     </div>
-                    <div class="px-4 grid grid-cols-2">
+                    <div class="px-4 grid grid-cols-2 mt-3 mb-1">
                         <h3 class="font-bold text-lg">Base Stats</h3>
                         <p>${baseStats}</p>
                     </div>
