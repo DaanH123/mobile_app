@@ -50,3 +50,7 @@ footer .mdc-tab__icon {
 .red {
   color: red !important;
 }
+
+body::-webkit-scrollbar {
+  display: none;
+}

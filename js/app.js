@@ -11,9 +11,9 @@ const pagination = document.querySelector('.pagination');
 const paginationP = document.createElement('p');
 const searchButton = document.querySelector('#searchButton');
 const seachPokemonButton = document.querySelector('#search-Button');
+const pokemonsPerPage = 20;
 
 let currentPage = 1;
-const pokemonsPerPage = 20;
 let pokemonID;
 let pokemonName;
 let typeID = 0;
@@ -21,6 +21,7 @@ let goBackButton = document.querySelector('#go-back');
 let addTypesContainer = document.querySelector('.addTypesToContainer');
 let clearLocalStorageButton = document.getElementById('clearLocalStorage');
 let favoriteButton = document.querySelector('.favoritePokemonBtn');
+let eventListenerAdded = false;
 
 // Object met alle kleuren voor de verschillende types
 let pokemontypeBackground = {
@@ -58,6 +59,17 @@ document.querySelector('#hamburger-menu').addEventListener('click', () => {
 
 window.addEventListener("popstate", function (event) {
     closeSheet();
+});
+
+window.addEventListener('load', function () {
+    if (sheetview())
+    {
+        closeSheet();
+    }
+    if (!this.window.location.href.endsWith('favorites.html'))
+    {
+        fetchPokemons();
+    }
 });
 
 
@@ -177,7 +189,7 @@ function fetchPokemonById() {
     let pokemonId = urlParams.get('pokemonID');
 
     // Make the API call
-    return fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
+    fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
         .then(response => response.json())
         .then(data => {
             const pokemon = data;
@@ -259,10 +271,10 @@ function fetchPokemonById() {
                 <div class="block md:flex items-center">
                     <div class="px-4 md:flex items-center">
                         <h2 class="font-bold text-xl uppercase">${pokemonID}. ${pokemonName}</h2>
-                        <img class="w-38 highlighted-spot rounded-2xl p-4" src="${pokemonImage}" alt="${pokemonName}">
+                        <img class="w-28 highlighted-spot rounded-2xl p-4" src="${pokemonImage}" alt="${pokemonName}">
                             <div class="flex gap-3">
-                                <img class="w-24 border-2 rounded-2xl border-blue-700" id="api_image" src="${pokemonImage}" alt="${pokemonName}">
-                                <img class="w-24 border rounded-2xl border-black" id="external_image" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/${external_pokemonid}.png" alt="">
+                                <img class="w-28 border-2 rounded-2xl border-blue-700" id="api_image" src="${pokemonImage}" alt="${pokemonName}">
+                                <img class="w-28 border rounded-2xl border-black" id="external_image" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/${external_pokemonid}.png" alt="">
                             </div>
                         </div>
                     <div class="px-4 space-y-4 pt-2">
@@ -309,8 +321,8 @@ function fetchPokemonById() {
 
             // Functie om de classes van de images te wisselen
             function swapClasses(element1, element2) {
-                element1.className = 'w-24 border rounded-2xl border-black';
-                element2.className = 'w-24 border-2 rounded-2xl border-blue-700';
+                element1.className = 'w-28 border rounded-2xl border-black';
+                element2.className = 'w-28 border-2 rounded-2xl border-blue-700';
             }
 
             // Swapped classes en zet de highlighted spot naar de external api image
@@ -328,6 +340,11 @@ function fetchPokemonById() {
             //Button voor de volgende pokemon maak eerst de pagina leeg daarna verhoog de pokemonID en fetch de pokemon opnieuw en update de url
             const nextPokeButton = document.querySelector('.nextPokeBtn');
             const prevPokeButton = document.querySelector('.prevPokeBtn');
+
+            if (pokemonID <= 1) {
+                prevPokeButton.disabled = true;
+                prevPokeButton.classList.add('opacity-90');
+            }
 
             if (nextPokeButton) {
 
@@ -355,8 +372,8 @@ function fetchPokemonById() {
                 prevPokeButton.addEventListener('click', () => {
 
                     // Check of de pokemonID kleiner is dan 1
-                    if (pokemonID < 1) {
-                        alert('This is the first pokemon');
+                    if (pokemonID <= 1) {
+                        return;
                     }
 
                     // Maak de pagina leeg en verlaag de pokemonID
@@ -479,7 +496,7 @@ function getAllPokemonTypes() {
 }
 
 function fetchPokemonsByType() {
-    document.querySelector('#go-back').style.display = 'block';
+    goBackButton.style.display = 'block';
     document.querySelector('.addTypesToContainer').innerHTML = '';
     const urlParams = new URLSearchParams(window.location.search);
     let typeID = urlParams.get('typeID');
@@ -488,6 +505,13 @@ function fetchPokemonsByType() {
         .then(response => response.json())
         .then(data => {
             const pokemons = data.pokemon;
+
+            if (pokemons.length === 0) {
+                alert('Geen pokemons gevonden!');
+                typesContainer.innerHTML = 'Geen pokemons gevonden!';
+                typesContainer.style.textAlign = 'center';
+                typesContainer.classList.remove('grid-cols-2')
+            }
 
             pokemons.forEach(pokemon => {
                 const pokemonName = pokemon.pokemon.name;
@@ -558,6 +582,7 @@ if (goBackButton) {
     goBackButton.addEventListener('click', () => {
         goBackButton.style.display = 'none';
         addTypesContainer.innerHTML = '';
+        addTypesContainer.classList.add('grid-cols-2');
         getAllPokemonTypes();
     });
 }
