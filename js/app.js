@@ -85,6 +85,9 @@ function sheetview() {
 
     content.forEach(element => {
         element.addEventListener('click', () => {
+            if (eventListenerAdded) {
+                return;
+            }
             pokemonID = element.getAttribute('data-id');
             const url = new URL(location);
 
@@ -96,11 +99,13 @@ function sheetview() {
             document.body.classList.add('stop-scrolling')
 
             document.querySelector('.sheet').classList.remove('sheet-out-of-view');
+            eventListenerAdded = true;
         });
     });
 
     closebtn.addEventListener('click', () => {
         closeSheet();
+        eventListenerAdded = false;
     });
 }
 
