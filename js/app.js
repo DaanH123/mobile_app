@@ -61,18 +61,6 @@ window.addEventListener("popstate", function (event) {
     closeSheet();
 });
 
-window.addEventListener('load', function () {
-    if (sheetview())
-    {
-        closeSheet();
-    }
-    if (!this.window.location.href.endsWith('favorites.html'))
-    {
-        fetchPokemons();
-    }
-});
-
-
 // Functie om de search button te laten zien als ik op het zoek incoontje klik
 function searchButtonVisible() {
     searchContainer.classList.toggle('hidden');
@@ -646,13 +634,19 @@ if (searchInput) {
     });
 }
 
-//Fetch de pokemons en update de pagination
-document.addEventListener('DOMContentLoaded', (event) => {
-    if (window.location.href.endsWith('index.html')) {
-        sheetview();
+window.addEventListener('load', function () {
+    if (sheetview())
+    {
+        closeSheet();
+    }
+    if (!this.window.location.href.endsWith('favorites.html') && !this.window.location.href.endsWith('types.html'))
+    {
         fetchPokemons();
     }
+});
 
+//Fetch de pokemons en update de pagination
+document.addEventListener('DOMContentLoaded', (event) => {
     if (window.location.href.endsWith('types.html')) {
         getAllPokemonTypes();
     }
