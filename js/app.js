@@ -86,6 +86,11 @@ function sheetview() {
             if (eventListenerAdded) {
                 return;
             }
+
+            if (window.location.href.endsWith('types.html')) {
+                goBackButton.style.display = 'none';
+            }
+
             pokemonID = element.getAttribute('data-id');
             const url = new URL(location);
 
@@ -102,6 +107,9 @@ function sheetview() {
     });
 
     closebtn.addEventListener('click', () => {
+        if (window.location.href.endsWith('types.html')) {
+            goBackButton.style.display = 'block';
+        }
         closeSheet();
         eventListenerAdded = false;
     });
