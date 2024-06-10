@@ -106,7 +106,7 @@ function sheetview() {
             let main = document.querySelector('#main');
 
             main.style.height = (window.innerHeight + 100) + 'px';
-            sheet.style.height = (main.offsetHeight + 100) + 'px';
+            sheet.style.height = (main.offsetHeight + 50) + 'px';
             main.style.overflow = 'hidden';
             eventListenerAdded = true;
         });
