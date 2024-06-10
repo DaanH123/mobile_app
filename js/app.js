@@ -15,6 +15,7 @@ const paginationP = document.createElement('p');
 const searchButton = document.querySelector('#searchButton');
 const seachPokemonButton = document.querySelector('#search-Button');
 const pokemonsPerPage = 20;
+const main = document.querySelector('#main');
 
 let currentPage = 1;
 let pokemonID;
@@ -71,7 +72,7 @@ function closeSheet() {
     history.pushState({}, "", location.pathname);
     document.body.classList.remove('stop-scrolling');
 
-    if (window.location.href.endsWith('favorites.html')) {  
+    if (window.location.href.endsWith('favorites.html')) {
         window.location.reload();
     }
 }
@@ -99,9 +100,14 @@ function sheetview() {
 
             fetchPokemonById();
 
-            document.body.classList.add('stop-scrolling')
-
             document.querySelector('.sheet').classList.remove('sheet-out-of-view');
+
+            let sheet = document.querySelector('.sheet');
+            let main = document.querySelector('#main');
+
+            main.style.height = (window.innerHeight + 100) + 'px';
+            sheet.style.height = (main.offsetHeight + 100) + 'px';
+            main.style.overflow = 'hidden';
             eventListenerAdded = true;
         });
     });
@@ -217,7 +223,7 @@ function fetchPokemonById() {
             } else {
                 favoriteButton.classList.remove('red');
             }
-            
+
             // Update de kleur van de favorieten button
             favoriteButton.addEventListener('click', function () {
                 // Check of de pokemon al in de favorieten zit
@@ -227,10 +233,10 @@ function fetchPokemonById() {
                     favoritePokemons = favoritePokemons.filter(pokemon => pokemon.id !== pokemonID);
                 } else {
                     // Voeg toe aan favorites
-                    favoritePokemons.push({ id: pokemonID, name: pokemonName, sprites: { front_default: pokemonImage }});
+                    favoritePokemons.push({ id: pokemonID, name: pokemonName, sprites: { front_default: pokemonImage } });
                 }
                 localStorage.setItem('favoritePokemons', JSON.stringify(favoritePokemons));
-            
+
                 // Update button color
                 if (foundPokemon) {
                     this.classList.remove('red');
@@ -654,12 +660,10 @@ if (searchInput) {
 }
 
 window.addEventListener('load', function () {
-    if (sheetview())
-    {
+    if (sheetview()) {
         closeSheet();
     }
-    if (!this.window.location.href.endsWith('favorites.html') && !this.window.location.href.endsWith('types.html'))
-    {
+    if (!this.window.location.href.endsWith('favorites.html') && !this.window.location.href.endsWith('types.html')) {
         fetchPokemons();
     }
 });
