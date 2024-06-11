@@ -216,7 +216,7 @@ function fetchPokemonById() {
 
             let favoritePokemons = JSON.parse(localStorage.getItem('favoritePokemons')) || [];
 
-            // Zet de initial kleur van de favorieten button
+            // Check of de pokemon al in de favorieten zit met de find functie en geef de button de juiste kleur
             let isFavorite = favoritePokemons.find(favPokemon => favPokemon.id === pokemonID);
             if (isFavorite) {
                 favoriteButton.classList.add('red');
@@ -228,7 +228,7 @@ function fetchPokemonById() {
             favoriteButton.addEventListener('click', function () {
                 // Check of de pokemon al in de favorieten zit
                 if (isFavorite) {
-                    // Verwijder uit favorites
+                    // Maak nieuwe array zonder de pokemon door middel van de filter functie
                     favoritePokemons = favoritePokemons.filter(favPokemon => favPokemon.id !== pokemonID);
                     this.classList.remove('red');
                 } else {
@@ -411,7 +411,7 @@ function searchPokemonByName(query) {
     // Zet de query naar lowercase voor de zekerheid
     query = query.toLowerCase();
 
-    // Filter de pokemons op basis van de query
+    // Maak nieuwe array met de zoekresultaten door middel van de filter functie
     const searchResults = pokemons.filter(pokemon => pokemon.name.includes(query));
 
     searchResults.forEach(pokemon => {
