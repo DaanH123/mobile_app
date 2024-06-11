@@ -65,12 +65,10 @@ function searchButtonVisible() {
     searchContainer.classList.toggle('hidden');
 }
 
-
 // Functie om de sheet te sluiten
 function closeSheet() {
     document.querySelector('.sheet').classList.add('sheet-out-of-view');
     history.pushState({}, "", location.pathname);
-    document.body.classList.remove('stop-scrolling');
 
     if (window.location.href.endsWith('favorites.html')) {
         window.location.reload();
@@ -80,7 +78,6 @@ function closeSheet() {
 function sheetview() {
     const content = document.querySelectorAll('.card');
     const closebtn = document.querySelector('.sheet .mdc-top-app-bar__navigation-icon');
-    history.pushState({}, "", location.pathname);
 
     content.forEach(element => {
         element.addEventListener('click', () => {
@@ -132,7 +129,7 @@ function fetchPokemons() {
 }
 
 function displayPokemons() {
-    // Haal de opgeslagen pokemons uit de lokale opslag en parse het naar een JavaScript object
+    // Haal de opgeslagen pokemons uit de lokale opslag en parse het naar een JavaScript array
     const pokemons = JSON.parse(localStorage.getItem('pokemons'));
 
     // Bereken startindex voor huidige pagina. Trek 1 af van huidige pagina en vermenigvuldig met pokemons per pagina.
@@ -140,6 +137,8 @@ function displayPokemons() {
 
     // Bereken de eindindex voor de huidige pagina
     const end = start + pokemonsPerPage;
+
+    // Array met de huidige pokemons
     const currentPokemons = pokemons.slice(start, end);
 
     // Maak de container leeg
@@ -172,7 +171,7 @@ function handleButtonClick(direction) {
     // Haal de opgeslagen pokemons uit de lokale opslag en parse het naar een JavaScript object
     const pokemons = JSON.parse(localStorage.getItem('pokemons'));
     // Bereken het aantal pagina's door de lengte van de pokemons te delen door de pokemons per pagina en afronden naar boven
-    const maxPage = Math.ceil(pokemons.length / pokemonsPerPage);
+    const maxPage = pokemons.length / pokemonsPerPage;
 
     // Check of de direction next is en de huidige pagina kleiner is dan het aantal pagina's
     if (direction === 'next' && currentPage < maxPage) {
@@ -218,39 +217,36 @@ function fetchPokemonById() {
             let favoritePokemons = JSON.parse(localStorage.getItem('favoritePokemons')) || [];
 
             // Zet de initial kleur van de favorieten button
-            if (favoritePokemons.find(pokemon => pokemon.id === pokemonID)) {
+            let isFavorite = favoritePokemons.find(favPokemon => favPokemon.id === pokemonID);
+            if (isFavorite) {
                 favoriteButton.classList.add('red');
             } else {
                 favoriteButton.classList.remove('red');
             }
-
+            
             // Update de kleur van de favorieten button
             favoriteButton.addEventListener('click', function () {
                 // Check of de pokemon al in de favorieten zit
-                const foundPokemon = favoritePokemons.find(pokemon => pokemon.id === pokemonID);
-                if (foundPokemon) {
-                    // Verwijder uit favorites en ook soort van extra check om te voorkomen dat er dubbele pokemons in de array komen
-                    favoritePokemons = favoritePokemons.filter(pokemon => pokemon.id !== pokemonID);
-                } else {
-                    // Voeg toe aan favorites
-                    favoritePokemons.push({ id: pokemonID, name: pokemonName, sprites: { front_default: pokemonImage } });
-                }
-                localStorage.setItem('favoritePokemons', JSON.stringify(favoritePokemons));
-
-                // Update button color
-                if (foundPokemon) {
+                if (isFavorite) {
+                    // Verwijder uit favorites
+                    favoritePokemons = favoritePokemons.filter(favPokemon => favPokemon.id !== pokemonID);
                     this.classList.remove('red');
                 } else {
+                    // Voeg toe aan favorites
+                    favoritePokemons.push({
+                        id: pokemonID,
+                        name: pokemonName,
+                        sprites: { front_default: pokemonImage }
+                    });
                     this.classList.add('red');
                 }
+                localStorage.setItem('favoritePokemons', JSON.stringify(favoritePokemons));
             });
 
             pokemon.types.forEach(type => {
                 //Loop door de types heen en sla de naam op in de pokemonType variabele
                 pokemonType += type.type.name;
-                if (pokemon.types.indexOf(type) !== pokemon.types.length - 1) {
-                    pokemonType += ", ";
-                }
+                
             });
 
             //Loop door de abilities heen en sla de naam op in de pokemonAbilities variabele
@@ -409,8 +405,13 @@ function fetchPokemonById() {
 function searchPokemonByName(query) {
     // Haal de opgeslagen pokemons uit de lokale opslag en parse het naar een JavaScript object
     const pokemons = JSON.parse(localStorage.getItem('pokemons'));
+
     document.querySelector('.addToContainer').innerHTML = '';
+
+    // Zet de query naar lowercase voor de zekerheid
     query = query.toLowerCase();
+
+    // Filter de pokemons op basis van de query
     const searchResults = pokemons.filter(pokemon => pokemon.name.includes(query));
 
     searchResults.forEach(pokemon => {
@@ -458,7 +459,6 @@ function formatPokemonID(external_pokemonid) {
 
 //Functie om de pagination te updaten
 function updatePagination() {
-
     // Check of de titel en pagination bestaan
     if (title) {
         title.innerHTML = `Pokemon page ${currentPage}`;
@@ -479,14 +479,13 @@ function getAllPokemonTypes() {
 
             types.forEach(type => {
                 const typeName = type.name;
-                const name = typeName.charAt(0).toUpperCase() + typeName.slice(1);
                 const typeId = type.url.split('/')[6];
                 const div = document.createElement('div');
                 div.className = 'type-card w-25';
                 div.innerHTML = `
                 <div class="typeCard bg-[${pokemontypeBackground[typeName]}] text-white mdc-card mdc-card--outlined" data-id="${typeId}">
                     <div class="flex justify-center flex-col">
-                        <h1 class="text-center py-2">${name}</h1>
+                        <h1 class="text-center py-2">${typeName}</h1>
                         </div>
                 </div>
           `;
@@ -528,7 +527,6 @@ function fetchPokemonsByType() {
 
             pokemons.forEach(pokemon => {
                 const pokemonName = pokemon.pokemon.name;
-                const name = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1);
                 pokemonID = pokemon.pokemon.url.split('/')[6];
                 const pokemonImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonID}.png`;
 
@@ -537,8 +535,8 @@ function fetchPokemonsByType() {
                 div.innerHTML = `
                 <div class="card mdc-card mdc-card--outlined" data-id=${pokemonID}>
                     <div class="flex justify-center flex-col">
-                        <img src="${pokemonImage}" alt="${name}" class="w-32 h-32 mx-auto">
-                        <h1 class="text-center py-2">${pokemonID}. ${name}</h1>
+                        <img src="${pokemonImage}" alt="${pokemonName}" class="w-32 h-32 mx-auto">
+                        <h1 class="text-center py-2">${pokemonID}. ${pokemonName}</h1>
                         </div>
                 </div>
         `;
@@ -605,9 +603,11 @@ if (nextButton) { nextButton.addEventListener('click', () => handleButtonClick('
 if (prevButton) { prevButton.addEventListener('click', () => handleButtonClick('back')); }
 
 // Event listener for the search button
-searchButton.addEventListener('click', () => {
-    searchButtonVisible();
-});
+if (searchButton) {
+    searchButton.addEventListener('click', () => {
+        searchButtonVisible();
+    });
+}
 
 if (seachPokemonButton) {
 
@@ -665,6 +665,7 @@ window.addEventListener('load', function () {
     }
     if (!this.window.location.href.endsWith('favorites.html') && !this.window.location.href.endsWith('types.html')) {
         fetchPokemons();
+        updatePagination();
     }
 });
 

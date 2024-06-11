@@ -12,13 +12,6 @@
   height: 100vh;
 }
 
-body.stop-scrolling {
-  position: fixed;
-  overflow-y: scroll;
-  width: 100%;
-  height: 100%;
-}
-
 .sheet-out-of-view {
   margin-left: -100%;
 }
