@@ -113,6 +113,10 @@ function sheetview() {
         if (window.location.href.endsWith('types.html')) {
             goBackButton.style.display = 'block';
         }
+
+        main.style.height = 'auto';
+        main.style.overflow = 'auto';
+
         closeSheet();
         eventListenerAdded = false;
     });
