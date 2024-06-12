@@ -195,6 +195,7 @@ function fetchPokemonById() {
     document.querySelector('.sheet main').innerHTML = '';
     const urlParams = new URLSearchParams(window.location.search);
     let pokemonId = urlParams.get('pokemonID');
+    const title = document.querySelector('#sheetTitle');
 
     // Make the API call
     fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
@@ -208,6 +209,8 @@ function fetchPokemonById() {
             let pokemonID = pokemon.id;
             const abilities = pokemon.abilities;
             const typeName = pokemon.types[0].type.name;
+
+            title.innerHTML = `${pokemonID}. ${pokemonName}`;
 
             //Haal het id op en format het voor de externe image
             const external_pokemonid = formatPokemonID(pokemonID);
@@ -231,7 +234,8 @@ function fetchPokemonById() {
             // Update de kleur van de favorieten button
             favoriteButton.addEventListener('click', function () {
                 // Check of de pokemon al in de favorieten zit
-                if (isFavorite) {
+                let pokemonFavorite = favoritePokemons.find(favPokemon => favPokemon.id === pokemonID);
+                if (pokemonFavorite) {
                     // Maak nieuwe array zonder de pokemon door middel van de filter functie
                     favoritePokemons = favoritePokemons.filter(favPokemon => favPokemon.id !== pokemonID);
                     this.classList.remove('red');
